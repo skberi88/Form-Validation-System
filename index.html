@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Form Validation</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+  
+  <!-- Fancy Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Gradient background with blur effect */
+    body {
+      background: linear-gradient(135deg, rgba(173, 232, 244, 0.9), rgba(174, 220, 205, 0.9), rgba(212, 174, 238, 0.9));
+      background-size: 300% 300%;
+      animation: gradientMove 8s ease infinite;
+      backdrop-filter: blur(12px);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Poppins', sans-serif;
+      padding: 15px;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Form container styling */
+    .container {
+      width: 100%;
+      max-width: 500px;
+      background-color: rgba(255, 255, 255, 0.85);
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .container:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    /* Form title */
+    .form-title {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 28px;
+      font-weight: 700;
+      color: #3a6f78;
+      letter-spacing: 1px;
+    }
+
+    /* Inputs */
+    .form-control {
+      border-radius: 10px;
+      padding: 12px 14px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      transition: all 0.3s ease;
+    }
+    .form-control:focus {
+      border-color: #6c63ff;
+      box-shadow: 0 0 10px rgba(108, 99, 255, 0.4);
+    }
+
+    /* Info icons */
+    .info-icon {
+      font-size: 14px;
+      color: #6c63ff;
+      cursor: pointer;
+      margin-left: 5px;
+      transition: color 0.3s ease;
+    }
+    .info-icon:hover {
+      color: #4b42cc;
+    }
+
+    /* Password strength text */
+    .password-strength {
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 5px;
+    }
+    .weak { color: #ff4b4b; }
+    .medium { color: #ffb84d; }
+    .strong { color: #4caf50; }
+
+    /* Response container styling */
+    .response-container {
+      text-align: center;
+      padding: 30px 0;
+      background-color: rgba(255,255,255,0.95);
+      border-radius: 12px;
+      margin-top: 20px;
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .response-message {
+      font-size: 20px;
+      font-weight: 600;
+      color: #388e3c;
+      margin-bottom: 20px;
+    }
+
+    /* Buttons */
+    .response-buttons button {
+      margin: 5px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, background-color 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+    }
+    .response-buttons button:hover {
+      transform: scale(1.05);
+    }
+    .btn1 { background-color: #d32f2f; color: white; }
+    .btn1:hover { background-color: #b71c1c; }
+    .btn2 { background-color: #388e3c; color: white; }
+    .btn2:hover { background-color: #2e7d32; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 576px) {
+      .container {
+        padding: 20px;
+      }
+      .form-title {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 class="form-title">Form Validation</h2>
+    <form id="validationForm" novalidate>
+      <div class="form-group">
+        <label for="fullName">Full Name 
+          <span class="info-icon" data-toggle="tooltip" title="At least 5 characters">ⓘ</span>
+        </label>
+        <input type="text" class="form-control" id="fullName" required minlength="5">
+        <div class="invalid-feedback">Full Name must be at least 5 characters.</div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email 
+          <span class="info-icon" data-toggle="tooltip" title="Example: example@domain.com">ⓘ</span>
+        </label>
+        <input type="email" class="form-control" id="email" required>
+        <div class="invalid-feedback">Please enter a valid email address.</div>
+      </div>
+      <div class="form-group">
+        <label for="phoneNumber">Phone Number 
+          <span class="info-icon" data-toggle="tooltip" title="Should be 10 digits">ⓘ</span>
+        </label>
+        <input type="tel" class="form-control" id="phoneNumber" required pattern="^[0-9]{10}$">
+        <div class="invalid-feedback">Please enter a valid 10-digit phone number.</div>
+      </div>
+      <div class="form-group">
+        <label for="password">Password 
+          <span class="info-icon" data-toggle="tooltip" title="At least 8 characters, not common, not your name">ⓘ</span>
+        </label>
+        <input type="password" class="form-control" id="password" required>
+        <div id="passwordStrength" class="password-strength"></div>
+        <div class="invalid-feedback">Password must be at least 8 characters, not common, and not your name.</div>
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password 
+          <span class="info-icon" data-toggle="tooltip" title="Must match your password">ⓘ</span>
+        </label>
+        <input type="password" class="form-control" id="confirmPassword" required>
+        <div class="invalid-feedback">Passwords do not match.</div>
+      </div>
+      <button type="submit" class="btn btn-success btn-block">Submit</button>
+    </form>
+
+    <div id="responseContainer" class="response-container">
+      <p id="responseMessage" class="response-message"></p>
+      <div class="response-buttons">
+        <button type="button" class="btn1" onclick="editResponse()">Edit Your Response</button>
+        <button type="button" class="btn2" onclick="addNewResponse()">Add New Response</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+
+    const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+    const phonePattern = /^[0-9]{10}$/;
+
+    function validateField(id) {
+      const field = document.getElementById(id);
+      const value = field.value.trim();
+      let isValid = true;
+
+      if (id === "fullName") {
+        isValid = value.length >= 5;
+      } 
+      else if (id === "email") {
+        isValid = emailPattern.test(value);
+      } 
+      else if (id === "phoneNumber") {
+        isValid = phonePattern.test(value) && value !== "1234567890";
+      } 
+      else if (id === "password") {
+        const fullName = document.getElementById("fullName").value.trim();
+        isValid = value.length >= 8 && value.toLowerCase() !== "password" && value !== fullName;
+      } 
+      else if (id === "confirmPassword") {
+        const password = document.getElementById("password").value;
+        isValid = value === password;
+      }
+
+      field.classList.toggle("is-invalid", !isValid);
+      return isValid;
+    }
+
+    ["fullName", "email", "phoneNumber", "password", "confirmPassword"].forEach(id => {
+      document.getElementById(id).addEventListener("blur", function() {
+        if (this.value.trim() !== "") {
+          validateField(id);
+        }
+      });
+      document.getElementById(id).addEventListener("input", function() {
+        if (this.classList.contains("is-invalid")) {
+          validateField(id);
+        }
+      });
+    });
+
+    document.getElementById("password").addEventListener("input", function () {
+      const val = this.value;
+      const strength = document.getElementById("passwordStrength");
+      if (val.length < 6) {
+        strength.innerText = "Weak";
+        strength.className = "password-strength weak";
+      } else if (val.length < 10) {
+        strength.innerText = "Medium";
+        strength.className = "password-strength medium";
+      } else {
+        strength.innerText = "Strong";
+        strength.className = "password-strength strong";
+      }
+    });
+
+    document.getElementById("validationForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+      let allValid = true;
+      ["fullName", "email", "phoneNumber", "password", "confirmPassword"].forEach(id => {
+        if (!validateField(id)) allValid = false;
+      });
+
+      if (!allValid) return;
+
+      const data = { 
+        fullName: document.getElementById("fullName").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        phoneNumber: document.getElementById("phoneNumber").value.trim(),
+        password: document.getElementById("password").value,
+        confirmPassword: document.getElementById("confirmPassword").value
+      };
+      localStorage.setItem("formData", JSON.stringify(data));
+
+      document.getElementById("responseMessage").innerText = "Your response has been recorded.";
+      document.getElementById("responseContainer").style.display = "block";
+      document.getElementById("validationForm").style.display = "none";
+    });
+
+    function editResponse() {
+      document.getElementById("responseContainer").style.display = "none";
+      document.getElementById("validationForm").style.display = "block";
+    }
+
+    function addNewResponse() {
+      localStorage.removeItem("formData");
+      document.getElementById("validationForm").reset();
+      document.getElementById("responseContainer").style.display = "none";
+      document.getElementById("validationForm").style.display = "block";
+      document.getElementById("passwordStrength").innerText = '';
+    }
+  </script>
+</body>
+</html>
